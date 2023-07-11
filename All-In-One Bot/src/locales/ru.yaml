@@ -1,0 +1,17 @@
+start: >
+  Hello, ${ctx.from.first_name ? ctx.from.first_name : ctx.from.username}!
+
+help: |
+  /help — Receive a message describing all available functions.
+
+  /weather — Receive a message with the current weather in the specified city.
+
+  /cat — Receive a message with a random cat picture.
+
+  /dog — Receive a message with a random dog picture.
+
+  Weather notifications — Subscribe to daily weather notifications for a specific city.
+
+  Place recomendations — Receive a message recommending local cafes, attractions or events in a specified city.
+
+  Task and Reminder management — The user can create tasks, set reminders and receive notifications from the bot.
