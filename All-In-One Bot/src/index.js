@@ -7,7 +7,7 @@ const token = process.env.BOT_KEY
 
 const bot = new Telegraf(token)
 const i18n = new TelegrafI18n({
-  defaultLanguage: "ru",
+  defaultLanguage: "en",
   allowMissing: false,
   directory: path.resolve(__dirname, "locales"),
 })
