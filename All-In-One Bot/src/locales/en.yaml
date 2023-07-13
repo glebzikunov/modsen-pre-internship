@@ -1,5 +1,7 @@
-start: >
-  Hello, ${ctx.from.first_name ? ctx.from.first_name : ctx.from.username}!
+start: |
+  Hello, <b>${ctx.from.first_name ? ctx.from.first_name : ctx.from.username}</b> 👋
+
+  Use /help to receive a message describing all available functions.
 
 help: |
   /help — Receive a message describing all available functions.
@@ -15,3 +17,10 @@ help: |
   Place recomendations — Receive a message recommending local cafes, attractions or events in a specified city.
 
   Task and Reminder management — The user can create tasks, set reminders and receive notifications from the bot.
+
+weather: |
+  City: <b>${response.data.name}</b> 🏙
+
+  Temperature: <b>${response.data.main.temp}</b> °C🌡
+
+  Feels like: <b>${response.data.main.feels_like}</b> °C🌡

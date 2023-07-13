@@ -1,6 +1,8 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
 
-composer.command("weather", async (ctx) => await ctx.reply("Weather"))
+composer.command("weather", (ctx) => {
+  return ctx.scene.enter("weather")
+})
 
 module.exports = composer
