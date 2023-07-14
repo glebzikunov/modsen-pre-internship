@@ -7,7 +7,7 @@ const catUrl = process.env.CAT_API_URL
 
 composer.command("cat", async (ctx) => {
   const response = await api.getData(catUrl, ctx)
-  ctx.replyWithPhoto(
+  await ctx.replyWithPhoto(
     { url: response.data[0].url },
     { caption: "Random Cat picture 🐱" }
   )

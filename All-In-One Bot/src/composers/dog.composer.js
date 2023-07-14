@@ -7,7 +7,7 @@ const dogUrl = process.env.DOG_API_URL
 
 composer.command("dog", async (ctx) => {
   const response = await api.getData(dogUrl, ctx)
-  ctx.replyWithPhoto(
+  await ctx.replyWithPhoto(
     { url: response.data.url },
     { caption: "Random Dog picture 🐶" }
   )
