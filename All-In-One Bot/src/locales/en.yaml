@@ -24,3 +24,14 @@ weather: |
   Temperature: <b>${response.data.main.temp}</b> °C🌡
 
   Feels like: <b>${response.data.main.feels_like}</b> °C🌡
+
+place: >
+  Choose place type
+
+placesFound: |
+  <b>Found results:</b>
+
+  ${foundList}
+
+noPlacesFound: |
+  No places found!
