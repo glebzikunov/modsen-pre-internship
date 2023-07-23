@@ -4,10 +4,24 @@ const {
   Scenes: { Stage },
 } = require("telegraf")
 const TelegrafI18n = require("telegraf-i18n")
+const mongoose = require("mongoose")
 const path = require("path")
 require("dotenv").config({ path: "./src/config/.env" })
 
+mongoose
+  .connect(
+    `mongodb+srv://zikunovga:${process.env.MONGO_USER_PASS}@cluster0.buvyrnx.mongodb.net/All-In-One-Test-Bot?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then((res) => console.log("Connected to Mongo DB"))
+  .catch((error) => console.error(error))
+
 const weatherScene = require("./scenes/weather.scene")
+const addWeatherNotifyScene = require("./scenes/addWeatherNotify.scene")
+const removeWeatherNotifyScene = require("./scenes/removeWeatherNotify.scene")
 const placeScene = require("./scenes/place.scene")
 const token = process.env.BOT_KEY
 const bot = new Telegraf(token)
@@ -20,7 +34,12 @@ const i18n = new TelegrafI18n({
 
 bot.use(session())
 bot.use(i18n.middleware())
-const stage = new Stage([weatherScene, placeScene])
+const stage = new Stage([
+  weatherScene,
+  placeScene,
+  addWeatherNotifyScene,
+  removeWeatherNotifyScene,
+])
 bot.use(stage.middleware())
 
 bot.use(require("./composers/start.composer"))
@@ -28,6 +47,7 @@ bot.use(require("./composers/cat.composer"))
 bot.use(require("./composers/dog.composer"))
 bot.use(require("./composers/weather.composer"))
 bot.use(require("./composers/place.composer"))
+bot.use(require("./composers/weatherNotifications.composer"))
 
 bot.launch()
 console.log("Bot launched.")

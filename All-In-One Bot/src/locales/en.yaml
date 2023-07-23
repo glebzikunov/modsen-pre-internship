@@ -35,3 +35,11 @@ placesFound: |
 
 noPlacesFound: |
   No places found!
+
+weatherNotifications: |
+  <b>Your weather notifications:</b>
+
+  ${notifications}
+
+noWeatherNotifications: >
+  You don't have any weather notifications!
