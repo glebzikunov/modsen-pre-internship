@@ -16,6 +16,15 @@ const getData = async (url, ctx) => {
   }
 }
 
+const getDataNoContext = async (url) => {
+  try {
+    const response = await axios.get(url)
+    return response
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const getCityInfo = async (cityName, ctx) => {
   try {
     const url = placeInfoUrl + "name=" + cityName + "&apikey=" + placeInfoKey
@@ -64,6 +73,7 @@ const getPlacesData = async (placeType, latitude, longitude, ctx) => {
 
 module.exports = {
   getData,
+  getDataNoContext,
   getPlacesData,
   getCityInfo,
 }
