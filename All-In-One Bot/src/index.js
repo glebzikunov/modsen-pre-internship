@@ -3,6 +3,7 @@ const {
   session,
   Scenes: { Stage },
 } = require("telegraf")
+const rateLimit = require("telegraf-ratelimit")
 const TelegrafI18n = require("telegraf-i18n")
 const mongoose = require("mongoose")
 const api = require("../src/api/index")
@@ -32,6 +33,12 @@ const addWeatherNotifyScene = require("./scenes/addWeatherNotify.scene")
 const removeWeatherNotifyScene = require("./scenes/removeWeatherNotify.scene")
 const placeScene = require("./scenes/place.scene")
 const token = process.env.BOT_KEY
+
+const limitConfig = {
+  window: 5000,
+  limit: 1,
+  onLimitExceeded: (ctx, next) => ctx.reply("Rate limit exceeded"),
+}
 const bot = new Telegraf(token)
 
 const i18n = new TelegrafI18n({
@@ -49,6 +56,7 @@ const stage = new Stage([
   removeWeatherNotifyScene,
 ])
 bot.use(stage.middleware())
+bot.use(rateLimit(limitConfig))
 
 bot.use(require("./composers/start.composer"))
 bot.use(require("./composers/cat.composer"))
