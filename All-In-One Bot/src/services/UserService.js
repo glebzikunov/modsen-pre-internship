@@ -16,3 +16,8 @@ exports.addUserWeatherNotification = async (user, weatherNotification) => {
   user.notifications.push(weatherNotification)
   user.save()
 }
+
+exports.addUserTask = async (user, task) => {
+  user.tasks.push(task)
+  user.save()
+}

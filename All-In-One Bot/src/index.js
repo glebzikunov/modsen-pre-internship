@@ -31,6 +31,9 @@ const weatherKey = process.env.WEATHER_API_KEY
 const weatherScene = require("./scenes/weather.scene")
 const addWeatherNotifyScene = require("./scenes/addWeatherNotify.scene")
 const removeWeatherNotifyScene = require("./scenes/removeWeatherNotify.scene")
+const addTaskScene = require("./scenes/addTask.scene")
+const removeTaskScene = require("./scenes/removeTask.scene")
+const updateTaskScene = require("./scenes/updateTask.scene")
 const placeScene = require("./scenes/place.scene")
 const token = process.env.BOT_KEY
 
@@ -54,6 +57,9 @@ const stage = new Stage([
   placeScene,
   addWeatherNotifyScene,
   removeWeatherNotifyScene,
+  addTaskScene,
+  removeTaskScene,
+  updateTaskScene,
 ])
 bot.use(stage.middleware())
 bot.use(rateLimit(limitConfig))
@@ -64,6 +70,8 @@ bot.use(require("./composers/dog.composer"))
 bot.use(require("./composers/weather.composer"))
 bot.use(require("./composers/place.composer"))
 bot.use(require("./composers/weatherNotifications.composer"))
+bot.use(require("./composers/tasks.composer"))
+bot.use(require("./composers/keyboardHandler.composer"))
 
 bot.launch()
 console.log("Bot launched.")

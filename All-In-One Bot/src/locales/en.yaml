@@ -43,3 +43,11 @@ weatherNotifications: |
 
 noWeatherNotifications: >
   You don't have any weather notifications!
+
+tasks: |
+  <b>Your tasks:</b>
+
+  ${tasks}
+
+noTasks: >
+  You don't have any tasks!
