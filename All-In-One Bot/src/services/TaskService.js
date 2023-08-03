@@ -1,4 +1,5 @@
 const Task = require("../models/Task")
+const TaskNotification = require("../models/TaskNotification")
 
 exports.getAllTasks = async () => {
   return await Task.find()
@@ -24,4 +25,22 @@ exports.getTaskByTaskName = async (taskName) => {
 
 exports.deleteTask = async (taskName) => {
   await Task.deleteMany({ task: taskName })
+}
+
+exports.createTaskNotification = async (notify) => {
+  return await TaskNotification.create(notify)
+}
+
+exports.getTaskNotificationByTaskName = async (taskName) => {
+  return await TaskNotification.findOne({ task: taskName })
+}
+
+exports.deleteTaskNotification = async (taskName) => {
+  await TaskNotification.deleteMany({ task: taskName })
+}
+
+exports.getAllUserTaskNotifications = async (tgId) => {
+  return await TaskNotification.find({
+    userId: tgId,
+  })
 }

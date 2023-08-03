@@ -45,6 +45,21 @@ composer.on("callback_query", async (ctx) => {
       await displayTasks(userId, ctx)
       break
 
+    case "addTaskNotification":
+      ctx.answerCbQuery("AddTaskNotification")
+      ctx.scene.enter("addTaskNotifications")
+      break
+
+    case "removeTaskNotification":
+      ctx.answerCbQuery("RemoveTaskNotification")
+      ctx.scene.enter("removeTaskNotifications")
+      break
+
+    case "showTaskNotification":
+      ctx.answerCbQuery("ShowTaskNotification")
+      await displayTaskNotifications(userId, ctx)
+      break
+
     default:
       ctx.answerCbQuery("There is no button like that!")
       break
@@ -100,6 +115,31 @@ async function displayTasks(tgId, ctx) {
   } catch (error) {
     console.error("Error while fetching tasks:", error)
     ctx.reply("Error while fetching tasks!")
+  }
+}
+
+async function displayTaskNotifications(tgId, ctx) {
+  try {
+    const notifications = await taskService.getAllUserTaskNotifications(tgId)
+
+    if (notifications.length === 0) {
+      ctx.reply(ctx.i18n.t("noTaskNotifications"))
+    } else {
+      const notificationList = notifications
+        .map((notification, index) => {
+          return `${index + 1}. ${notification.task} - ${notification.datetime}`
+        })
+        .join("\n")
+
+      const message = ctx.i18n.t("taskNotifications", {
+        notifications: notificationList,
+      })
+
+      ctx.replyWithHTML(message)
+    }
+  } catch (error) {
+    console.error("Error while fetching task notifications:", error)
+    ctx.reply("Error while fetching task notifications.")
   }
 }
 

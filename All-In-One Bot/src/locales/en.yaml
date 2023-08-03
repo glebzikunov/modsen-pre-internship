@@ -33,7 +33,7 @@ placesFound: |
 
   ${foundList}
 
-noPlacesFound: |
+noPlacesFound: >
   No places found!
 
 weatherNotifications: |
@@ -51,3 +51,16 @@ tasks: |
 
 noTasks: >
   You don't have any tasks!
+
+taskNotification: |
+  <b>TASK NOTIFICATION</b>
+
+  ${taskName}
+
+taskNotifications: |
+  <b>Your task notifications:</b>
+
+  ${notifications}
+
+noTaskNotifications: >
+  You don't have any task notifications!

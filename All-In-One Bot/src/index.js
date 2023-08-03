@@ -35,6 +35,8 @@ const addTaskScene = require("./scenes/addTask.scene")
 const removeTaskScene = require("./scenes/removeTask.scene")
 const updateTaskScene = require("./scenes/updateTask.scene")
 const placeScene = require("./scenes/place.scene")
+const addTaskNotifyScene = require("./scenes/addTaskNotify.scene")
+const removeTaskNotifyScene = require("./scenes/removeTaskNotify.scene")
 const token = process.env.BOT_KEY
 
 const limitConfig = {
@@ -60,6 +62,8 @@ const stage = new Stage([
   addTaskScene,
   removeTaskScene,
   updateTaskScene,
+  addTaskNotifyScene,
+  removeTaskNotifyScene,
 ])
 bot.use(stage.middleware())
 bot.use(rateLimit(limitConfig))
@@ -72,6 +76,7 @@ bot.use(require("./composers/place.composer"))
 bot.use(require("./composers/weatherNotifications.composer"))
 bot.use(require("./composers/tasks.composer"))
 bot.use(require("./composers/keyboardHandler.composer"))
+bot.use(require("./composers/taskNotifications.composer"))
 
 bot.launch()
 console.log("Bot launched.")

@@ -21,3 +21,8 @@ exports.addUserTask = async (user, task) => {
   user.tasks.push(task)
   user.save()
 }
+
+exports.addUserTaskNotification = async (user, taskNotification) => {
+  user.taskNotifications.push(taskNotification)
+  user.save()
+}
