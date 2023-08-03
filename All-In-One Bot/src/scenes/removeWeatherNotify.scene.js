@@ -20,6 +20,11 @@ module.exports = new WizardScene(
   async (ctx) => {
     try {
       if (cityRegex.test(ctx.message.text)) {
+        if (ctx.session.weatherNotifyJob) {
+          ctx.session.weatherNotifyJob.stop()
+          ctx.session.weatherNotifyJob = null
+        }
+
         const weatherNotify = await weatherService.getWeatherNotificationByCity(
           ctx.message.text
         )

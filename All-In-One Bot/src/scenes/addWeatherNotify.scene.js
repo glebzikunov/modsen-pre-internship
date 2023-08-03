@@ -86,6 +86,7 @@ module.exports = new WizardScene(
               null,
               true
             )
+            ctx.session.weatherNotifyJob = weatherNotify
             weatherNotify.start()
 
             const weatherNotification =
