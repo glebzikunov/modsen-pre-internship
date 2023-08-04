@@ -49,6 +49,7 @@ module.exports = new WizardScene(
         const cronExpression = `${minutes} ${hours} * * *`
         const { cityName, uniqueId } = ctx.session
         const user = await User.findOne({ uniqueId: uniqueId })
+        ctx.session.weatherNotifyJob = []
 
         if (user) {
           const existingNotification = await WeatherNotification.findOne({
@@ -86,7 +87,13 @@ module.exports = new WizardScene(
               null,
               true
             )
-            ctx.session.weatherNotifyJob = weatherNotify
+
+            const notification = {
+              city: cityName,
+              weatherNotification: weatherNotify,
+            }
+
+            ctx.session.weatherNotifyJob.push(notification)
             weatherNotify.start()
 
             const weatherNotification =

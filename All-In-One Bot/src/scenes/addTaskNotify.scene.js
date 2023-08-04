@@ -47,6 +47,7 @@ module.exports = new WizardScene(
         const cronExpression = `${minutes} ${hours} * * *`
         const { taskName, uniqueId } = ctx.session
         const user = await User.findOne({ uniqueId: uniqueId })
+        ctx.session.taskNotifyJob = []
 
         if (user) {
           const task = await taskService.getTaskByTaskName(taskName)
@@ -78,7 +79,13 @@ module.exports = new WizardScene(
                 null,
                 true
               )
-              ctx.session.taskNotifyJob = taskNotify
+
+              const notification = {
+                task: taskName,
+                taskNotification: taskNotify,
+              }
+
+              ctx.session.taskNotifyJob.push(notification)
               taskNotify.start()
 
               const taskNotification = await taskService.createTaskNotification(

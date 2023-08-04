@@ -21,8 +21,11 @@ module.exports = new WizardScene(
     try {
       if (taskRegex.test(ctx.message.text)) {
         if (ctx.session.taskNotifyJob) {
-          ctx.session.taskNotifyJob.stop()
-          ctx.session.taskNotifyJob = null
+          ctx.session.taskNotifyJob.forEach((notification) => {
+            if (notification.task === ctx.message.text) {
+              notification.taskNotification.stop()
+            }
+          })
         }
 
         const taskNotify = await taskService.getTaskNotificationByTaskName(
