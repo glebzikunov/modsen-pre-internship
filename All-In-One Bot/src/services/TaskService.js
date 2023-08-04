@@ -35,6 +35,10 @@ exports.getTaskNotificationByTaskName = async (taskName) => {
   return await TaskNotification.findOne({ task: taskName })
 }
 
+exports.getTaskNotificationById = async (id) => {
+  return await TaskNotification.findById(id)
+}
+
 exports.deleteTaskNotification = async (taskName) => {
   await TaskNotification.deleteMany({ task: taskName })
 }

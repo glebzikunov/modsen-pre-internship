@@ -6,10 +6,10 @@ const {
 const rateLimit = require("telegraf-ratelimit")
 const TelegrafI18n = require("telegraf-i18n")
 const mongoose = require("mongoose")
-const api = require("../src/api/index")
-const { User } = require("../src/models/User")
-const CronJob = require("cron").CronJob
-const weatherService = require("../src/services/WeatherService")
+const {
+  restartWeatherNotifications,
+  restartTaskNotifications,
+} = require("../src/services/notificationService")
 const path = require("path")
 require("dotenv").config({ path: "./src/config/.env" })
 
@@ -24,10 +24,6 @@ mongoose
   .then((res) => console.log("Connected to Mongo DB"))
   .catch((error) => console.error(error))
 
-restartNotifications()
-
-const weatherUrl = process.env.WEATHER_API_URL
-const weatherKey = process.env.WEATHER_API_KEY
 const weatherScene = require("./scenes/weather.scene")
 const addWeatherNotifyScene = require("./scenes/addWeatherNotify.scene")
 const removeWeatherNotifyScene = require("./scenes/removeWeatherNotify.scene")
@@ -45,7 +41,6 @@ const limitConfig = {
   onLimitExceeded: (ctx, next) => ctx.reply("Rate limit exceeded"),
 }
 const bot = new Telegraf(token)
-
 const i18n = new TelegrafI18n({
   defaultLanguage: "en",
   allowMissing: false,
@@ -81,56 +76,9 @@ bot.use(require("./composers/taskNotifications.composer"))
 bot.launch()
 console.log("Bot launched.")
 
+restartWeatherNotifications(bot)
+restartTaskNotifications(bot)
+
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"))
 process.once("SIGTERM", () => bot.stop("SIGTERM"))
-
-async function restartNotifications() {
-  try {
-    const users = await User.find({})
-    users.forEach((user) => {
-      const userWeatherNotifications = user.notifications
-      if (userWeatherNotifications.length !== 0) {
-        userWeatherNotifications.forEach((notification) => {
-          getWeatherNotifyById(notification).then((notify) => {
-            const { city, datetime } = notify
-            const [hours, minutes] = datetime.split(":")
-            const cronExpression = `${minutes} ${hours} * * *`
-            const weatherNotification = new CronJob(
-              cronExpression,
-              async () => {
-                const response = await api.getDataNoContext(
-                  weatherUrl +
-                    "&appid=" +
-                    weatherKey +
-                    "&q=" +
-                    city +
-                    "&units=metric"
-                )
-
-                htmlMessage = `City: <b>${response.data.name}</b> 🏙
-
-Temperature: <b>${response.data.main.temp}</b> °C🌡
-
-Feels like: <b>${response.data.main.feels_like}</b> °C🌡`
-
-                bot.telegram.sendMessage(user.uniqueId, htmlMessage, {
-                  parse_mode: "HTML",
-                })
-              },
-              null,
-              true
-            )
-            weatherNotification.start()
-          })
-        })
-      }
-    })
-  } catch (error) {
-    console.error("Error fetching users!", error)
-  }
-}
-
-async function getWeatherNotifyById(id) {
-  return await weatherService.getWeatherNotificationById(id)
-}
