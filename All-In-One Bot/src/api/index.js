@@ -1,10 +1,5 @@
 const axios = require("axios")
-require("dotenv").config({ path: ".src/config/.env" })
-
-const placeInfoUrl = process.env.PLACE_INFO_URL
-const placeInfoKey = process.env.PLACE_INFO_KEY
-const placeSearchUrL = process.env.PLACE_SEARCH_URL
-const placeSearchKey = process.env.PLACE_SEARCH_KEY
+const config = require("../constants/config")
 
 const getData = async (url, ctx) => {
   try {
@@ -27,7 +22,12 @@ const getDataNoContext = async (url) => {
 
 const getCityInfo = async (cityName, ctx) => {
   try {
-    const url = placeInfoUrl + "name=" + cityName + "&apikey=" + placeInfoKey
+    const url =
+      config.PLACE_INFO_URL +
+      "name=" +
+      cityName +
+      "&apikey=" +
+      config.PLACE_INFO_KEY
     const response = await axios.get(url)
     return [response.data.lat, response.data.lon]
   } catch (error) {
@@ -48,7 +48,7 @@ const getPlacesData = async (placeType, latitude, longitude, ctx) => {
 
   const options = {
     method: "GET",
-    url: placeSearchUrL,
+    url: config.PLACE_SEARCH_URL,
     params: {
       query: placeType,
       ll: `${latitude},${longitude}`,
@@ -58,7 +58,7 @@ const getPlacesData = async (placeType, latitude, longitude, ctx) => {
     },
     headers: {
       accept: "application/json",
-      Authorization: placeSearchKey,
+      Authorization: config.PLACE_SEARCH_KEY,
     },
   }
 

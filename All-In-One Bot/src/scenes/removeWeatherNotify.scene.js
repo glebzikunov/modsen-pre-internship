@@ -1,10 +1,8 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const { User } = require("../models/User")
-const weatherService = require("../services/WeatherService")
-require("dotenv").config({ path: ".src/config/.env" })
-
+const weatherService = require("../services/weatherService")
+const notificationService = require("../services/notificationService")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(
@@ -33,7 +31,10 @@ module.exports = new WizardScene(
         )
         const userId = weatherNotify.userId.toString()
         const weatherNotifyId = weatherNotify._id.toString()
-        await deleteUserWeatherNotification(userId, weatherNotifyId)
+        await notificationService.deleteUserWeatherNotification(
+          userId,
+          weatherNotifyId
+        )
         await weatherService.deleteWeatherNotification(ctx.message.text)
 
         ctx.reply("Notification succesfully deleted")
@@ -47,23 +48,3 @@ module.exports = new WizardScene(
     }
   }
 )
-
-async function deleteUserWeatherNotification(userId, weatherNotificationId) {
-  try {
-    const user = await User.findOne({ _id: userId })
-    let notificationIndex = 0
-
-    user.notifications.forEach((val, index) => {
-      if (val.toString() === weatherNotificationId) {
-        notificationIndex = index
-        return
-      }
-    })
-
-    user.notifications.splice(notificationIndex, 1)
-    await user.save()
-  } catch (error) {
-    console.error("Error deleting user weather notification!", error)
-    throw error
-  }
-}

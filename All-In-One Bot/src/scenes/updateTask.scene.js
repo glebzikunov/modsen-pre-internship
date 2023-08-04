@@ -2,8 +2,7 @@ const {
   Scenes: { WizardScene },
 } = require("telegraf")
 const Task = require("../models/Task.js")
-require("dotenv").config({ path: ".src/config/.env" })
-
+const TaskNotification = require("../models/TaskNotification.js")
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 
 module.exports = new WizardScene(
@@ -38,10 +37,17 @@ module.exports = new WizardScene(
         const newTaskName = ctx.message.text
         const { taskName } = ctx.session
         const task = await Task.findOne({ task: taskName })
+        const taskNotification = await TaskNotification.findOne({
+          task: taskName,
+        })
 
         if (task) {
           task.task = newTaskName
           task.save()
+          if (taskNotification) {
+            taskNotification.task = newTaskName
+            taskNotification.save()
+          }
           ctx.reply("Task updated successfully!")
           return ctx.scene.leave()
         } else {

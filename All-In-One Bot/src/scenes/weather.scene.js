@@ -2,10 +2,7 @@ const {
   Scenes: { WizardScene },
 } = require("telegraf")
 const api = require("../api/index.js")
-require("dotenv").config({ path: ".src/config/.env" })
-
-const weatherUrl = process.env.WEATHER_API_URL
-const weatherKey = process.env.WEATHER_API_KEY
+const config = require("../constants/config.js")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(
@@ -22,13 +19,13 @@ module.exports = new WizardScene(
     try {
       if (ctx.message.location) {
         const response = await api.getData(
-          weatherUrl +
+          config.WEATHER_API_URL +
             "lat=" +
             ctx.message.location.latitude +
             "&lon=" +
             ctx.message.location.longitude +
             "&appid=" +
-            weatherKey +
+            config.WEATHER_API_KEY +
             "&units=metric",
           ctx
         )
@@ -37,9 +34,9 @@ module.exports = new WizardScene(
         return ctx.scene.leave()
       } else if (cityRegex.test(ctx.message.text)) {
         const response = await api.getData(
-          weatherUrl +
+          config.WEATHER_API_URL +
             "&appid=" +
-            weatherKey +
+            config.WEATHER_API_KEY +
             "&q=" +
             ctx.message.text +
             "&units=metric",

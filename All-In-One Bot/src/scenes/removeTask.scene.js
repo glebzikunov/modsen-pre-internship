@@ -2,9 +2,7 @@ const {
   Scenes: { WizardScene },
 } = require("telegraf")
 const { User } = require("../models/User")
-const taskService = require("../services/TaskService.js")
-require("dotenv").config({ path: ".src/config/.env" })
-
+const taskService = require("../services/taskService.js")
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 
 module.exports = new WizardScene(

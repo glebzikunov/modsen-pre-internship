@@ -5,7 +5,6 @@ const { User } = require("../models/User")
 composer.start(async (ctx) => {
   try {
     const { id, username, first_name, last_name } = ctx.from
-
     let user = await User.findOne({ uniqueId: id })
 
     if (!user) {

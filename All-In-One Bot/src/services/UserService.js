@@ -1,4 +1,4 @@
-const User = require("../models/User")
+const { User } = require("../models/User")
 
 exports.getAllUsers = async () => {
   return await User.find()
@@ -10,6 +10,16 @@ exports.createUser = async (user) => {
 
 exports.getUserById = async (id) => {
   return await User.findById(id)
+}
+
+exports.getUserObjectId = async (tgId) => {
+  try {
+    const user = await User.findOne({ uniqueId: tgId })
+    return user._id.toString()
+  } catch (error) {
+    console.error("Error while fetching user:", error)
+    throw error
+  }
 }
 
 exports.addUserWeatherNotification = async (user, weatherNotification) => {

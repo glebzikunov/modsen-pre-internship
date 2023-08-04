@@ -11,11 +11,12 @@ const {
   restartTaskNotifications,
 } = require("../src/services/notificationService")
 const path = require("path")
-require("dotenv").config({ path: "./src/config/.env" })
+const scenes = require("./constants/scenes")
+const config = require("./constants/config")
 
 mongoose
   .connect(
-    `mongodb+srv://zikunovga:${process.env.MONGO_USER_PASS}@cluster0.buvyrnx.mongodb.net/All-In-One-Test-Bot?retryWrites=true&w=majority`,
+    `mongodb+srv://zikunovga:${config.MONGO_USER_PASS}@cluster0.buvyrnx.mongodb.net/All-In-One-Test-Bot?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -24,42 +25,31 @@ mongoose
   .then((res) => console.log("Connected to Mongo DB"))
   .catch((error) => console.error(error))
 
-const weatherScene = require("./scenes/weather.scene")
-const addWeatherNotifyScene = require("./scenes/addWeatherNotify.scene")
-const removeWeatherNotifyScene = require("./scenes/removeWeatherNotify.scene")
-const addTaskScene = require("./scenes/addTask.scene")
-const removeTaskScene = require("./scenes/removeTask.scene")
-const updateTaskScene = require("./scenes/updateTask.scene")
-const placeScene = require("./scenes/place.scene")
-const addTaskNotifyScene = require("./scenes/addTaskNotify.scene")
-const removeTaskNotifyScene = require("./scenes/removeTaskNotify.scene")
-const token = process.env.BOT_KEY
-
 const limitConfig = {
   window: 5000,
   limit: 1,
   onLimitExceeded: (ctx, next) => ctx.reply("Rate limit exceeded"),
 }
-const bot = new Telegraf(token)
+const bot = new Telegraf(config.BOT_KEY)
 const i18n = new TelegrafI18n({
   defaultLanguage: "en",
   allowMissing: false,
   directory: path.resolve(__dirname, "locales"),
 })
+const stage = new Stage([
+  scenes.weatherScene,
+  scenes.placeScene,
+  scenes.addWeatherNotifyScene,
+  scenes.removeWeatherNotifyScene,
+  scenes.addTaskScene,
+  scenes.removeTaskScene,
+  scenes.updateTaskScene,
+  scenes.addTaskNotifyScene,
+  scenes.removeTaskNotifyScene,
+])
 
 bot.use(session())
 bot.use(i18n.middleware())
-const stage = new Stage([
-  weatherScene,
-  placeScene,
-  addWeatherNotifyScene,
-  removeWeatherNotifyScene,
-  addTaskScene,
-  removeTaskScene,
-  updateTaskScene,
-  addTaskNotifyScene,
-  removeTaskNotifyScene,
-])
 bot.use(stage.middleware())
 bot.use(rateLimit(limitConfig))
 
@@ -73,8 +63,7 @@ bot.use(require("./composers/tasks.composer"))
 bot.use(require("./composers/keyboardHandler.composer"))
 bot.use(require("./composers/taskNotifications.composer"))
 
-bot.launch()
-console.log("Bot launched.")
+bot.launch().then(console.log("Bot launched."))
 
 restartWeatherNotifications(bot)
 restartTaskNotifications(bot)

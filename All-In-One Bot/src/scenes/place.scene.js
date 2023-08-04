@@ -2,8 +2,6 @@ const {
   Scenes: { WizardScene },
 } = require("telegraf")
 const api = require("../api/index.js")
-require("dotenv").config({ path: ".src/config/.env" })
-
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(

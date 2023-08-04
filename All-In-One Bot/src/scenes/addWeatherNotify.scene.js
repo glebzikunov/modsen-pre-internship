@@ -3,13 +3,10 @@ const {
 } = require("telegraf")
 const api = require("../api/index.js")
 const { User, WeatherNotification } = require("../models/User")
-const userService = require("../services/UserService")
-const weatherService = require("../services/WeatherService")
+const userService = require("../services/userService.js")
+const weatherService = require("../services/weatherService.js")
 const CronJob = require("cron").CronJob
-require("dotenv").config({ path: ".src/config/.env" })
-
-const weatherUrl = process.env.WEATHER_API_URL
-const weatherKey = process.env.WEATHER_API_KEY
+const config = require("../constants/config.js")
 const cityRegex = /^\p{L}+$/u
 const timeFormatRegex = /^\d{2}:\d{2}$/
 
@@ -73,9 +70,9 @@ module.exports = new WizardScene(
               cronExpression,
               async () => {
                 const response = await api.getData(
-                  weatherUrl +
+                  config.WEATHER_API_URL +
                     "&appid=" +
-                    weatherKey +
+                    config.WEATHER_API_KEY +
                     "&q=" +
                     cityName +
                     "&units=metric",
