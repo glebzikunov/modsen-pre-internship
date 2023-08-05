@@ -1,5 +1,5 @@
 const axios = require("axios")
-const config = require("../constants/config")
+const config = require("@constants/config")
 
 const getData = async (url, ctx) => {
   try {

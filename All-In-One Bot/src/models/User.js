@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
-const WeatherNotification = require("./WeatherNotification")
-const TaskNotification = require("./TaskNotification")
-const Task = require("./Task")
+const WeatherNotification = require("@models/WeatherNotification")
+const TaskNotification = require("@models/TaskNotification")
+const Task = require("@models/Task")
 
 const userSchema = new mongoose.Schema({
   uniqueId: { type: Number, required: true, unique: true },

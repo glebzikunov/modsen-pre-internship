@@ -1,4 +1,4 @@
-const { User } = require("../models/User")
+const { User } = require("@models/User")
 
 exports.getAllUsers = async () => {
   return await User.find()
@@ -35,4 +35,44 @@ exports.addUserTask = async (user, task) => {
 exports.addUserTaskNotification = async (user, taskNotification) => {
   user.taskNotifications.push(taskNotification)
   user.save()
+}
+
+exports.deleteUserTask = async (userId, taskId) => {
+  try {
+    const user = await User.findOne({ _id: userId })
+    let taskIndex = 0
+
+    user.tasks.forEach((val, index) => {
+      if (val.toString() === taskId) {
+        taskIndex = index
+        return
+      }
+    })
+
+    user.tasks.splice(taskIndex, 1)
+    await user.save()
+  } catch (error) {
+    console.error("Error deleting user task!", error)
+    throw error
+  }
+}
+
+exports.deleteUserTaskNotification = async (userId, taskNotificationId) => {
+  try {
+    const user = await User.findOne({ _id: userId })
+    let notificationIndex = 0
+
+    user.taskNotifications.forEach((val, index) => {
+      if (val.toString() === taskNotificationId) {
+        notificationIndex = index
+        return
+      }
+    })
+
+    user.taskNotifications.splice(notificationIndex, 1)
+    await user.save()
+  } catch (error) {
+    console.error("Error deleting user task notification!", error)
+    throw error
+  }
 }

@@ -1,10 +1,10 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const { User } = require("../models/User")
-const TaskNotification = require("../models/TaskNotification.js")
-const userService = require("../services/userService")
-const taskService = require("../services/taskService")
+const { User } = require("@models/User")
+const TaskNotification = require("@models/TaskNotification.js")
+const userService = require("@services/userService")
+const taskService = require("@services/taskService")
 const CronJob = require("cron").CronJob
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 const timeFormatRegex = /^\d{2}:\d{2}$/

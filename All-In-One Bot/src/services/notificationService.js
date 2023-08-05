@@ -1,9 +1,9 @@
 const CronJob = require("cron").CronJob
-const api = require("../api/index")
-const { User } = require("../models/User")
-const weatherService = require("./weatherService")
-const taskService = require("./taskService")
-const { config } = require("../constants/config")
+const api = require("@api/index")
+const { User } = require("@models/User")
+const weatherService = require("@services/weatherService")
+const taskService = require("@services/taskService")
+const config = require("@constants/config")
 
 const deleteUserWeatherNotification = async (userId, weatherNotificationId) => {
   try {

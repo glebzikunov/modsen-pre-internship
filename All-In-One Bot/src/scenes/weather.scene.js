@@ -1,8 +1,8 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const api = require("../api/index.js")
-const config = require("../constants/config.js")
+const api = require("@api/index.js")
+const config = require("@constants/config.js")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(

@@ -1,8 +1,8 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const { User } = require("../models/User")
-const taskService = require("../services/taskService.js")
+const taskService = require("@services/taskService")
+const userService = require("@services/userService")
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 
 module.exports = new WizardScene(
@@ -19,12 +19,27 @@ module.exports = new WizardScene(
     try {
       if (taskRegex.test(ctx.message.text)) {
         const task = await taskService.getTaskByTaskName(ctx.message.text)
-        const userId = task.userId.toString()
-        const taskId = task._id.toString()
+        const taskNotify = await taskService.getTaskNotificationByTaskName(
+          ctx.message.text
+        )
 
-        await deleteUserTask(userId, taskId)
-        await taskService.deleteTask(ctx.message.text)
-        ctx.reply("Task succesfully deleted")
+        if (task) {
+          const userId = task.userId.toString()
+          const taskId = task._id.toString()
+          await userService.deleteUserTask(userId, taskId)
+          await taskService.deleteTask(ctx.message.text)
+
+          if (taskNotify) {
+            const taskNotifyId = taskNotify._id.toString()
+            await userService.deleteUserTaskNotification(userId, taskNotifyId)
+            await taskService.deleteTaskNotification(ctx.message.text)
+          }
+
+          ctx.reply("Task succesfully deleted")
+        } else {
+          ctx.reply("You don't have task with name: " + ctx.message.text)
+        }
+
         return ctx.scene.leave()
       } else {
         ctx.scene.reenter()
@@ -35,23 +50,3 @@ module.exports = new WizardScene(
     }
   }
 )
-
-async function deleteUserTask(userId, taskId) {
-  try {
-    const user = await User.findOne({ _id: userId })
-    let taskIndex = 0
-
-    user.tasks.forEach((val, index) => {
-      if (val.toString() === taskId) {
-        taskIndex = index
-        return
-      }
-    })
-
-    user.tasks.splice(taskIndex, 1)
-    await user.save()
-  } catch (error) {
-    console.error("Error deleting user task!", error)
-    throw error
-  }
-}

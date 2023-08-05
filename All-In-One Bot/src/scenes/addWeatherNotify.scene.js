@@ -1,12 +1,12 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const api = require("../api/index.js")
-const { User, WeatherNotification } = require("../models/User")
-const userService = require("../services/userService.js")
-const weatherService = require("../services/weatherService.js")
+const api = require("@api/index.js")
+const { User, WeatherNotification } = require("@models/User")
+const userService = require("@services/userService.js")
+const weatherService = require("@services/weatherService.js")
 const CronJob = require("cron").CronJob
-const config = require("../constants/config.js")
+const config = require("@constants/config.js")
 const cityRegex = /^\p{L}+$/u
 const timeFormatRegex = /^\d{2}:\d{2}$/
 

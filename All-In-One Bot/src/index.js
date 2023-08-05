@@ -1,3 +1,4 @@
+require("module-alias/register")
 const {
   Telegraf,
   session,
@@ -9,10 +10,10 @@ const mongoose = require("mongoose")
 const {
   restartWeatherNotifications,
   restartTaskNotifications,
-} = require("../src/services/notificationService")
+} = require("@services/notificationService")
+const scenes = require("@constants/scenes")
+const config = require("@constants/config")
 const path = require("path")
-const scenes = require("./constants/scenes")
-const config = require("./constants/config")
 
 mongoose
   .connect(
@@ -53,15 +54,15 @@ bot.use(i18n.middleware())
 bot.use(stage.middleware())
 bot.use(rateLimit(limitConfig))
 
-bot.use(require("./composers/start.composer"))
-bot.use(require("./composers/cat.composer"))
-bot.use(require("./composers/dog.composer"))
-bot.use(require("./composers/weather.composer"))
-bot.use(require("./composers/place.composer"))
-bot.use(require("./composers/weatherNotifications.composer"))
-bot.use(require("./composers/tasks.composer"))
-bot.use(require("./composers/keyboardHandler.composer"))
-bot.use(require("./composers/taskNotifications.composer"))
+bot.use(require("@composers/start.composer"))
+bot.use(require("@composers/cat.composer"))
+bot.use(require("@composers/dog.composer"))
+bot.use(require("@composers/weather.composer"))
+bot.use(require("@composers/place.composer"))
+bot.use(require("@composers/weatherNotifications.composer"))
+bot.use(require("@composers/tasks.composer"))
+bot.use(require("@composers/keyboardHandler.composer"))
+bot.use(require("@composers/taskNotifications.composer"))
 
 bot.launch().then(console.log("Bot launched."))
 

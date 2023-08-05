@@ -1,6 +1,6 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
-const { User } = require("../models/User")
+const { User } = require("@models/User")
 
 composer.start(async (ctx) => {
   try {

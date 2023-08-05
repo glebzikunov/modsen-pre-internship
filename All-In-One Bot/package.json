@@ -14,11 +14,23 @@
     "axios": "^1.4.0",
     "cron": "^2.4.0",
     "dotenv": "^16.3.1",
+    "module-alias": "^2.2.3",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.0",
     "telegraf": "^4.12.2",
     "telegraf-i18n": "^6.6.0",
     "telegraf-ratelimit": "^2.0.0"
+  },
+  "_moduleAliases": {
+    "@root": "./All-In-One Bot",
+    "@api": "src/api",
+    "@composers": "src/composers",
+    "@config": "src/config",
+    "@constants": "src/constants",
+    "@locales": "src/locales",
+    "@models": "src/models",
+    "@scenes": "src/scenes",
+    "@services": "src/services"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

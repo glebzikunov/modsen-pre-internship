@@ -1,5 +1,5 @@
-const Task = require("../models/Task")
-const TaskNotification = require("../models/TaskNotification")
+const Task = require("@models/Task")
+const TaskNotification = require("@models/TaskNotification")
 
 exports.getAllTasks = async () => {
   return await Task.find()

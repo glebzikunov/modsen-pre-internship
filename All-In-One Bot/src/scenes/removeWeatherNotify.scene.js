@@ -1,8 +1,8 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const weatherService = require("../services/weatherService")
-const notificationService = require("../services/notificationService")
+const weatherService = require("@services/weatherService")
+const notificationService = require("@services/notificationService")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(

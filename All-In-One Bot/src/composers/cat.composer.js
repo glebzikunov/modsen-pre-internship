@@ -1,7 +1,7 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
-const api = require("../api/index.js")
-const { config } = require("../constants/config")
+const api = require("@api/index.js")
+const config = require("@constants/config")
 
 composer.command("cat", async (ctx) => {
   const response = await api.getData(config.CAT_API_URL, ctx)

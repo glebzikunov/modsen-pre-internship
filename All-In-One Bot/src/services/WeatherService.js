@@ -1,4 +1,4 @@
-const WeatherNotification = require("../models/WeatherNotification")
+const WeatherNotification = require("@models/WeatherNotification")
 
 exports.getAllWeatherNotifications = async () => {
   return await WeatherNotification.find()

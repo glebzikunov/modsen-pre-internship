@@ -1,8 +1,8 @@
 const {
   Scenes: { WizardScene },
 } = require("telegraf")
-const Task = require("../models/Task.js")
-const TaskNotification = require("../models/TaskNotification.js")
+const Task = require("@models/Task.js")
+const TaskNotification = require("@models/TaskNotification.js")
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 
 module.exports = new WizardScene(

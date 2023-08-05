@@ -1,6 +1,6 @@
 const { Composer } = require("telegraf")
-const userService = require("../services/userService")
-const notificationService = require("../services/notificationService")
+const userService = require("@services/userService")
+const notificationService = require("@services/notificationService")
 const composer = new Composer()
 
 composer.on("callback_query", async (ctx) => {
