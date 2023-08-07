@@ -73,13 +73,8 @@ const restartWeatherNotifications = async (bot) => {
                     city +
                     "&units=metric"
                 )
-                htmlMessage = `City: <b>${response.data.name}</b> 🏙
-
-Temperature: <b>${response.data.main.temp}</b> °C🌡
-
-Feels like: <b>${response.data.main.feels_like}</b> °C🌡`
-
-                bot.telegram.sendMessage(user.uniqueId, htmlMessage, {
+                const message = replyMessages.weather(response)
+                bot.telegram.sendMessage(user.uniqueId, message, {
                   parse_mode: "HTML",
                 })
               },
