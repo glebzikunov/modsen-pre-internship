@@ -1,4 +1,4 @@
-const CronJob = require("cron").CronJob
+const CronJob = require("node-cron")
 const api = require("@api/index")
 const { User } = require("@models/User")
 const weatherService = require("@services/weatherService")
@@ -62,7 +62,7 @@ const restartWeatherNotifications = async (bot) => {
             const { city, datetime } = notify
             const [hours, minutes] = datetime.split(":")
             const cronExpression = `${minutes} ${hours} * * *`
-            const weatherNotification = new CronJob(
+            const weatherNotification = CronJob.schedule(
               cronExpression,
               async () => {
                 const response = await api.getDataNoContext(
@@ -78,8 +78,10 @@ const restartWeatherNotifications = async (bot) => {
                   parse_mode: "HTML",
                 })
               },
-              null,
-              true
+              {
+                scheduled: true,
+                timezone: "Europe/Minsk",
+              }
             )
             weatherNotification.start()
           })
@@ -148,7 +150,7 @@ const restartTaskNotifications = async (bot) => {
             const { task, datetime } = notify
             const [hours, minutes] = datetime.split(":")
             const cronExpression = `${minutes} ${hours} * * *`
-            const taskNotification = new CronJob(
+            const taskNotification = CronJob.schedule(
               cronExpression,
               async () => {
                 const message = replyMessages.taskNotification(task)
@@ -156,8 +158,10 @@ const restartTaskNotifications = async (bot) => {
                   parse_mode: "HTML",
                 })
               },
-              null,
-              true
+              {
+                scheduled: true,
+                timezone: "Europe/Minsk",
+              }
             )
             taskNotification.start()
           })

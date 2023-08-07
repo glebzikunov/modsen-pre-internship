@@ -7,7 +7,7 @@ const userService = require("@services/userService.js")
 const weatherService = require("@services/weatherService.js")
 const config = require("@constants/config.js")
 const replyMessages = require("@constants/replyMessages")
-const CronJob = require("cron").CronJob
+const CronJob = require("node-cron")
 const cityRegex = /^\p{L}+$/u
 const timeFormatRegex = /^\d{2}:\d{2}$/
 
@@ -67,7 +67,7 @@ module.exports = new WizardScene(
           }
 
           try {
-            const weatherNotify = new CronJob(
+            const weatherNotify = CronJob.schedule(
               cronExpression,
               async () => {
                 const response = await api.getData(
@@ -83,8 +83,10 @@ module.exports = new WizardScene(
 
                 await ctx.replyWithHTML(message)
               },
-              null,
-              true
+              {
+                scheduled: true,
+                timezone: "Europe/Minsk",
+              }
             )
 
             const notification = {

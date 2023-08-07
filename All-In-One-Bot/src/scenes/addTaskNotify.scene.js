@@ -6,7 +6,7 @@ const TaskNotification = require("@models/TaskNotification.js")
 const userService = require("@services/userService")
 const taskService = require("@services/taskService")
 const replyMessages = require("@constants/replyMessages")
-const CronJob = require("cron").CronJob
+const CronJob = require("node-cron")
 const taskRegex = /^[a-zA-Z0-9 ]+$/
 const timeFormatRegex = /^\d{2}:\d{2}$/
 
@@ -68,14 +68,16 @@ module.exports = new WizardScene(
             }
 
             try {
-              const taskNotify = new CronJob(
+              const taskNotify = CronJob.schedule(
                 cronExpression,
                 async () => {
                   const message = replyMessages.taskNotification(taskName)
                   await ctx.replyWithHTML(message)
                 },
-                null,
-                true
+                {
+                  scheduled: true,
+                  timezone: "Europe/Minsk",
+                }
               )
 
               const notification = {
