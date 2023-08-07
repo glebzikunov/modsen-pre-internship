@@ -15,11 +15,11 @@ Use /help to receive a message describing all available functions.`,
 
 /dog — Receive a message with a random dog picture.
 
-/weatherNotify — Subscribe to daily weather notifications for a specific city.
+/weathernotify — Subscribe to daily weather notifications for a specific city.
 
 /place — Receive a message recommending local cafes, attractions or events in a specified city.
 
-/tasks and /taskNotify — The user can create tasks, set reminders and receive notifications from the bot.`,
+/tasks and /tasknotify — The user can create tasks, set reminders and receive notifications from the bot.`,
 
   weather: (response) => `
 City: <b>${response.data.name}</b> 🏙

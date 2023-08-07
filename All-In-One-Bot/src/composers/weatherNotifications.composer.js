@@ -1,7 +1,7 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
 
-composer.command("weatherNotify", async (ctx) => {
+composer.command("weathernotify", async (ctx) => {
   await ctx.reply("Choose action:", {
     reply_markup: {
       inline_keyboard: [
