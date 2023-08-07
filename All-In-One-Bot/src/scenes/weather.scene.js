@@ -3,6 +3,7 @@ const {
 } = require("telegraf")
 const api = require("@api/index.js")
 const config = require("@constants/config.js")
+const replyMessages = require("@constants/replyMessages")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(
@@ -29,8 +30,9 @@ module.exports = new WizardScene(
             "&units=metric",
           ctx
         )
+        const message = replyMessages.weather(response)
 
-        await ctx.replyWithHTML(ctx.i18n.t("weather", { response }))
+        await ctx.replyWithHTML(message)
         return ctx.scene.leave()
       } else if (cityRegex.test(ctx.message.text)) {
         const response = await api.getData(
@@ -42,8 +44,9 @@ module.exports = new WizardScene(
             "&units=metric",
           ctx
         )
+        const message = replyMessages.weather(response)
 
-        await ctx.replyWithHTML(ctx.i18n.t("weather", { response }))
+        await ctx.replyWithHTML(message)
         return ctx.scene.leave()
       } else {
         ctx.scene.reenter()

@@ -1,10 +1,12 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
 const { User } = require("@models/User")
+const replyMessages = require("@constants/replyMessages")
 
 composer.start(async (ctx) => {
   try {
     const { id, username, first_name, last_name } = ctx.from
+    const message = replyMessages.start(ctx)
     let user = await User.findOne({ uniqueId: id })
 
     if (!user) {
@@ -18,12 +20,15 @@ composer.start(async (ctx) => {
       await user.save()
     }
 
-    await ctx.replyWithHTML(ctx.i18n.t("start", { ctx }))
+    await ctx.replyWithHTML(message)
   } catch (error) {
     console.error("Error during /start command:", error)
   }
 })
 
-composer.help(async (ctx) => await ctx.reply(ctx.i18n.t("help", { ctx })))
+composer.help(async (ctx) => {
+  const message = replyMessages.help
+  await ctx.reply(message)
+})
 
 module.exports = composer

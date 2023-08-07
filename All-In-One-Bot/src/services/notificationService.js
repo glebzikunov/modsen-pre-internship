@@ -4,6 +4,7 @@ const { User } = require("@models/User")
 const weatherService = require("@services/weatherService")
 const taskService = require("@services/taskService")
 const config = require("@constants/config")
+const replyMessages = require("@constants/replyMessages")
 
 const deleteUserWeatherNotification = async (userId, weatherNotificationId) => {
   try {
@@ -32,17 +33,15 @@ const displayWeatherNotifications = async (tgId, ctx) => {
     )
 
     if (notifications.length === 0) {
-      ctx.reply(ctx.i18n.t("noWeatherNotifications"))
+      const message = replyMessages.noWeatherNotifications
+      ctx.reply(message)
     } else {
       const notificationList = notifications
         .map((notification, index) => {
           return `${index + 1}. ${notification.city} - ${notification.datetime}`
         })
         .join("\n")
-
-      const message = ctx.i18n.t("weatherNotifications", {
-        notifications: notificationList,
-      })
+      const message = replyMessages.weatherNotifications(notificationList)
 
       ctx.replyWithHTML(message)
     }
@@ -102,17 +101,15 @@ const displayTasks = async (tgId, ctx) => {
     const tasks = await taskService.getAllUserTasks(tgId)
 
     if (tasks.length === 0) {
-      ctx.reply(ctx.i18n.t("noTasks"))
+      const message = replyMessages.noTasks
+      ctx.reply(message)
     } else {
       const taskList = tasks
         .map((task, index) => {
           return `${index + 1}. ${task.task}`
         })
         .join("\n")
-
-      const message = ctx.i18n.t("tasks", {
-        tasks: taskList,
-      })
+      const message = replyMessages.tasks(taskList)
 
       ctx.replyWithHTML(message)
     }
@@ -127,17 +124,15 @@ const displayTaskNotifications = async (tgId, ctx) => {
     const notifications = await taskService.getAllUserTaskNotifications(tgId)
 
     if (notifications.length === 0) {
-      ctx.reply(ctx.i18n.t("noTaskNotifications"))
+      const message = replyMessages.noTaskNotifications
+      ctx.reply(message)
     } else {
       const notificationList = notifications
         .map((notification, index) => {
           return `${index + 1}. ${notification.task} - ${notification.datetime}`
         })
         .join("\n")
-
-      const message = ctx.i18n.t("taskNotifications", {
-        notifications: notificationList,
-      })
+      const message = replyMessages.taskNotifications(notificationList)
 
       ctx.replyWithHTML(message)
     }
@@ -161,10 +156,8 @@ const restartTaskNotifications = async (bot) => {
             const taskNotification = new CronJob(
               cronExpression,
               async () => {
-                htmlMessage = `<b>TASK NOTIFICATION</b>
-
-${task}`
-                bot.telegram.sendMessage(user.uniqueId, htmlMessage, {
+                const message = replyMessages.taskNotification(task)
+                bot.telegram.sendMessage(user.uniqueId, message, {
                   parse_mode: "HTML",
                 })
               },

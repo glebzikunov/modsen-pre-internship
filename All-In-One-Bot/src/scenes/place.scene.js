@@ -2,6 +2,7 @@ const {
   Scenes: { WizardScene },
 } = require("telegraf")
 const api = require("@api/index.js")
+const replyMessages = require("@constants/replyMessages")
 const cityRegex = /^\p{L}+$/u
 
 module.exports = new WizardScene(
@@ -36,11 +37,13 @@ module.exports = new WizardScene(
               return `${index + 1}. <b>${place.name}</b> — ${address}`
             })
             .join("\n\n")
+          const message = replyMessages.placesFound(foundList)
 
-          await ctx.replyWithHTML(ctx.i18n.t("placesFound", { foundList }))
+          await ctx.replyWithHTML(message)
           return ctx.scene.leave()
         } else {
-          ctx.reply(ctx.i18n.t("noPlacesFound"))
+          const message = replyMessages.noPlacesFound
+          ctx.reply(message)
           return ctx.scene.leave()
         }
       } else if (cityRegex.test(ctx.message.text)) {
@@ -56,11 +59,13 @@ module.exports = new WizardScene(
               return `${index + 1}. <b>${place.name}</b> — ${address}`
             })
             .join("\n\n")
+          const message = replyMessages.placesFound(foundList)
 
-          await ctx.replyWithHTML(ctx.i18n.t("placesFound", { foundList }))
+          await ctx.replyWithHTML(message)
           return ctx.scene.leave()
         } else {
-          ctx.reply(ctx.i18n.t("noPlacesFound"))
+          const message = replyMessages.noPlacesFound
+          ctx.reply(message)
           return ctx.scene.leave()
         }
       } else {

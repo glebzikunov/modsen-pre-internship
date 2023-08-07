@@ -5,8 +5,9 @@ const api = require("@api/index.js")
 const { User, WeatherNotification } = require("@models/User")
 const userService = require("@services/userService.js")
 const weatherService = require("@services/weatherService.js")
-const CronJob = require("cron").CronJob
 const config = require("@constants/config.js")
+const replyMessages = require("@constants/replyMessages")
+const CronJob = require("cron").CronJob
 const cityRegex = /^\p{L}+$/u
 const timeFormatRegex = /^\d{2}:\d{2}$/
 
@@ -78,8 +79,9 @@ module.exports = new WizardScene(
                     "&units=metric",
                   ctx
                 )
+                const message = replyMessages.weather(response)
 
-                await ctx.replyWithHTML(ctx.i18n.t("weather", { response }))
+                await ctx.replyWithHTML(message)
               },
               null,
               true
