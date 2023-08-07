@@ -1,8 +1,10 @@
 const { Composer } = require("telegraf")
 const composer = new Composer()
+const replyMessages = require("@constants/replyMessages")
 
 composer.command("place", async (ctx) => {
-  await ctx.reply(ctx.i18n.t("place", { ctx }), {
+  const message = replyMessages.place
+  await ctx.reply(message, {
     reply_markup: {
       keyboard: [["Cafes"], ["Landmarks"], ["Events"]],
       resize_keyboard: true,

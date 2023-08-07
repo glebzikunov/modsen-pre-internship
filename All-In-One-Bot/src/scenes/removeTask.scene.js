@@ -26,6 +26,15 @@ module.exports = new WizardScene(
         if (task) {
           const userId = task.userId.toString()
           const taskId = task._id.toString()
+
+          if (ctx.session.taskNotifyJob) {
+            ctx.session.taskNotifyJob.forEach((notification) => {
+              if (notification.task === ctx.message.text) {
+                notification.taskNotification.stop()
+              }
+            })
+          }
+
           await userService.deleteUserTask(userId, taskId)
           await taskService.deleteTask(ctx.message.text)
 
